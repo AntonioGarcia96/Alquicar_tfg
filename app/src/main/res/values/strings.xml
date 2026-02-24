@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Alquicar_tfg</string>
+
+    <!--TEXTO PANTALLA LOGIN-->
+    <string name="texto1">Iniciar Sesión</string>
+    <string name="texto2">Introduce tu correo electrónico y contraseña</string>
+    <string name="correo">ejemplo@email.com</string>
+    <string name="texto3">Continuar</string>
+    <string name="texto4">Registrarse</string>
+    <string name="contrasenna">***********</string>
+
 </resources>
