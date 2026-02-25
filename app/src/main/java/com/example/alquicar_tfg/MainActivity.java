@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         // Buscamos el botón de ir al registro en el XML
-        Button btnIrRegistro = findViewById(R.id.btnIrRegistro);
+        Button btnIrRegistro = findViewById(R.id.btRegistrarse);
 
 // Le ponemos el "escuchador" de clics
         btnIrRegistro.setOnClickListener(v -> {
