@@ -1,24 +1,25 @@
 package com.example.alquicar_tfg;
 
 import android.os.Bundle;
-
-import androidx.activity.EdgeToEdge;
+import android.widget.TextView; // ¡Asegúrate de que esto se importa!
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 public class RegisterActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_register);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
+
+        // 1. Enlazamos el texto de "Volver" que Bryan puso en el XML
+        TextView tvVolver = findViewById(R.id.tvVolver);
+
+        // 2. Le ponemos el escuchador de clics
+        tvVolver.setOnClickListener(v -> {
+            // El comando finish() cierra esta pantalla y te devuelve a la anterior
+            finish();
         });
+
+        // Aquí debajo programaremos luego el botón verde de "Registrarse"
     }
 }
