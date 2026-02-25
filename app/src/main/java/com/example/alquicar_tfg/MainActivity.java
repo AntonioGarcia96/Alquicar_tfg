@@ -47,6 +47,15 @@ public class MainActivity extends AppCompatActivity {
                 hacerLogin(correo);
             }
         });
+        // Buscamos el botón de ir al registro en el XML
+        Button btnIrRegistro = findViewById(R.id.btnIrRegistro);
+
+// Le ponemos el "escuchador" de clics
+        btnIrRegistro.setOnClickListener(v -> {
+            // Creamos el "viaje" desde esta pantalla (MainActivity) a la nueva (RegisterActivity)
+            Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
+            startActivity(intent);
+        });
     }
 
     // 4. LA LLAMADA AL SERVIDOR (Retrofit):
