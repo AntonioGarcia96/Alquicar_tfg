@@ -64,6 +64,18 @@
                 android:layout_marginBottom="16dp"/>
 
             <EditText
+                    android:id="@+id/etFecha"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="date"
+                    android:hint="YYYY-MM-DD"
+                    android:background="@android:drawable/editbox_background"
+                    android:ems="10"
+                    android:padding="12dp"
+                    android:layout_marginBottom="16dp"
+                     />
+
+            <EditText
                 android:id="@+id/etDireccionReg"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -79,25 +91,13 @@
                 android:layout_marginBottom="16dp">
 
                 <EditText
-                    android:id="@+id/etCpReg"
+                    android:id="@+id/etTelefono"
                     android:layout_width="0dp"
                     android:layout_height="50dp"
                     android:layout_weight="1"
-                    android:hint="Código Postal"
-                    android:inputType="number"
+                    android:hint="Teléfono"
                     android:background="@android:drawable/editbox_background"
-                    android:padding="12dp"
-                    android:layout_marginEnd="8dp"/>
-
-                <EditText
-                    android:id="@+id/etCiudadReg"
-                    android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_weight="1"
-                    android:hint="Ciudad"
-                    android:background="@android:drawable/editbox_background"
-                    android:padding="12dp"
-                    android:layout_marginStart="8dp"/>
+                    android:padding="12dp"/>
             </LinearLayout>
 
             <EditText
