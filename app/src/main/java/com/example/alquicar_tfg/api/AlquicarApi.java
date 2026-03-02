@@ -8,16 +8,16 @@ import com.google.gson.JsonObject;
 
 public interface AlquicarApi {
 
-    // Llamamos al archivo login.php de Fernando
+    //Llamamos al archivo login.php de Fernando
     @FormUrlEncoded
     @POST("login.php")
     Call<JsonObject> loginUsuario(
             @Field("correo") String correo
     );
 
-    // NUEVO: Llamamos al archivo de registro
+    //Llamamos al archivo de registro
     @FormUrlEncoded
-    @POST("registro.php") // <-- Pon aquí el nombre exacto del PHP de Fernando
+    @POST("registro.php")
     Call<JsonObject> registrarUsuario(
             @Field("dni") String dni,
             @Field("nombre") String nombre,
@@ -29,8 +29,6 @@ public interface AlquicarApi {
             @Field("cuenta_bancaria") String cuentaBancaria,
             @Field("contrasenna") String contrasenna
 
-            // ¡El que estuvimos arreglando!
 
-            // IMPORTANTE: Añade o quita parámetros según lo que necesite la base de datos
     );
 }
