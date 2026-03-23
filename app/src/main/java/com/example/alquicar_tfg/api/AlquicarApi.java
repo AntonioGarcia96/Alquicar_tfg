@@ -31,4 +31,10 @@ public interface AlquicarApi {
 
 
     );
+    @FormUrlEncoded
+    @POST("login.php")
+    Call<JsonObject> loginUsuario(
+            @Field("email") String email,
+            @Field("contrasenna") String contrasenna
+    );
 }

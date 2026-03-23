@@ -16,8 +16,8 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-    // Creamos cajas vacías para guardar el botón y el campo de texto que hizo Bryan en el XML.
     private EditText etCorreo;
+    private EditText etPassword;
     private Button btnContinuar;
 
     @Override
@@ -25,61 +25,64 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Buscamos los elementos por su ID y los metemos en las variables que creamos arriba.
         etCorreo = findViewById(R.id.etCorreo);
+        // ¡Aquí está el cambio! Enlazamos con el ID exacto de Bryan: etContrasenna
+        etPassword = findViewById(R.id.etContrasenna);
         btnContinuar = findViewById(R.id.btContinuar);
 
         btnContinuar.setOnClickListener(v -> {
-            // Cogemos el texto que ha escrito el usuario, lo pasamos a String y le quitamos los espacios en blanco de los bordes con trim()
             String correo = etCorreo.getText().toString().trim();
+            String password = etPassword.getText().toString().trim();
 
-            // Comprobamos si está vacío. Si lo está, mostramos un mensajito emergente (Toast).
-            if (correo.isEmpty()) {
-                Toast.makeText(MainActivity.this, "Por favor, introduce tu correo", Toast.LENGTH_SHORT).show();
+            if (correo.isEmpty() || password.isEmpty()) {
+                Toast.makeText(MainActivity.this, "Por favor, introduce tu correo y contraseña", Toast.LENGTH_SHORT).show();
             } else {
-                // Si ha escrito algo, llamamos al método que se comunica con el XAMPP de Fernando.
-                hacerLogin(correo);
+                hacerLogin(correo, password);
             }
         });
-        // Buscamos el botón de ir al registro en el XML
-        Button btnIrRegistro = findViewById(R.id.btRegistrarse);
 
+        Button btnIrRegistro = findViewById(R.id.btRegistrarse);
         btnIrRegistro.setOnClickListener(v -> {
-            // Creamos el "viaje" desde esta pantalla (MainActivity) a la nueva (RegisterActivity)
             Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
             startActivity(intent);
         });
     }
 
-    private void hacerLogin(String correo) {
-        // Preparamos la llamada  usando las clases ya creadas antes.
+    private void hacerLogin(String correo, String password) {
         AlquicarApi api = RetrofitClient.getClient().create(AlquicarApi.class);
-        Call<JsonObject> call = api.loginUsuario(correo);
+        Call<JsonObject> call = api.loginUsuario(correo, password);
 
-        // enqueue() significa "haz la llamada en segundo plano". Android no permite hacer consultas a internet en el "hilo principal" porque congelaría la pantalla del móvil.
         call.enqueue(new Callback<JsonObject>() {
-
-            // onResponse lo ponemos para ejecutar este código cuando XAMPP haya contestado
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    // Extraemos la variable "status" del JSON que Fernando imprimió en su PHP
                     String status = response.body().get("status").getAsString();
 
                     if (status.equals("success")) {
-                        Toast.makeText(MainActivity.this, "¡Login Correcto!", Toast.LENGTH_SHORT).show();
+                        // NUEVO: Extraemos el nombre y los minutos del JSON que nos manda Fernando
+                        String nombreUsuario = response.body().get("nombre").getAsString();
+                        String minutosUsuario = response.body().get("minutos_disponibles").getAsString();
+
+                        // Preparamos el viaje
+                        Intent intent = new Intent(MainActivity.this, MainMenuActivity.class);
+
+                        // NUEVO: Metemos los datos en la "mochila" del Intent usando putExtra
+                        intent.putExtra("NOMBRE_USUARIO", nombreUsuario);
+                        intent.putExtra("MINUTOS_USUARIO", minutosUsuario);
+
+                        startActivity(intent);
+                        finish();
+
                     } else {
-                        // Si el correo no existe, mostramos el mensaje de error de Fernando.
                         String mensaje = response.body().get("message").getAsString();
                         Toast.makeText(MainActivity.this, mensaje, Toast.LENGTH_LONG).show();
                     }
                 }
             }
 
-            // onFailure se ejecutará si el servidor de XAMPP está apagado, la IP está mal o no hay internet.
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-                Toast.makeText(MainActivity.this, "Error de conexión", Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, "Error de conexión: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }

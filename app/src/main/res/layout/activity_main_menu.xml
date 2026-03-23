@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:gravity="center_horizontal">
+
+    <TextView
+        android:id="@+id/tvSaludo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Hola James"
+        android:textSize="32sp"
+        android:textColor="#000000"
+        android:layout_marginTop="32dp"/>
+
+    <TextView
+        android:id="@+id/tvMinutos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tienes disponibles 35 minutos"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="#000000"
+        android:layout_marginBottom="32dp"/>
+
+    <Button android:id="@+id/btnPerfil" android:layout_width="match_parent" android:layout_height="60dp" android:text="Perfil" android:layout_marginBottom="12dp" android:backgroundTint="#1E88E5" android:textColor="#FFFFFF"/>
+    <Button android:id="@+id/btnAlquilarMinutos" android:layout_width="match_parent" android:layout_height="60dp" android:text="Alquilar por minutos" android:layout_marginBottom="12dp" android:backgroundTint="#1E88E5" android:textColor="#FFFFFF"/>
+    <Button android:id="@+id/btnAlquilarDia" android:layout_width="match_parent" android:layout_height="60dp" android:text="Alquilar por dia" android:layout_marginBottom="12dp" android:backgroundTint="#1E88E5" android:textColor="#FFFFFF"/>
+    <Button android:id="@+id/btnBonos" android:layout_width="match_parent" android:layout_height="60dp" android:text="Bonos" android:layout_marginBottom="12dp" android:backgroundTint="#1E88E5" android:textColor="#FFFFFF"/>
+    <Button android:id="@+id/btnHistorial" android:layout_width="match_parent" android:layout_height="60dp" android:text="Historial de viajes" android:layout_marginBottom="12dp" android:backgroundTint="#1E88E5" android:textColor="#FFFFFF"/>
+    <Button android:id="@+id/btnAtencion" android:layout_width="match_parent" android:layout_height="60dp" android:text="Atención al cliente" android:layout_marginBottom="32dp" android:backgroundTint="#1E88E5" android:textColor="#FFFFFF"/>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <TextView
+        android:id="@+id/tvCerrarSesion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cerrar Sesión"
+        android:textColor="#FF8A80"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:padding="16dp"/>
+</LinearLayout>
