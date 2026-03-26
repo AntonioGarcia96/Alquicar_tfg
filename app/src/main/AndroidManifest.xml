@@ -14,7 +14,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Alquicar_tfg"
         android:usesCleartextTraffic="true">
-
+        <activity
+            android:name=".EditarPerfilActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PerfilActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MainMenuActivity"
+            android:exported="false" />
         <activity
             android:name=".RegisterActivity"
             android:exported="false" />

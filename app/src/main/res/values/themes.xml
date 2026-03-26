@@ -6,4 +6,10 @@
     </style>
 
     <style name="Theme.Alquicar_tfg" parent="Base.Theme.Alquicar_tfg" />
-</resources>
+    <style name="ShapeAppearance.Alquicar.RoundedBottomHeader" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopLeft">0dp</item>
+        <item name="cornerSizeTopRight">0dp</item>
+        <item name="cornerSizeBottomLeft">100dp</item> <item name="cornerSizeBottomRight">100dp</item>
+    </style>
+    </resources>
