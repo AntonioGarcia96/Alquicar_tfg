@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/infoCoche"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:background="@color/white">
+
+    <TextView
+            android:id="@+id/tvModelo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Seat Mii"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_marginBottom="5dp" />
+
+    <TextView
+            android:id="@+id/tvMatricula"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="1234TFG"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_marginBottom="5dp" />
+
+    <TextView
+            android:id="@+id/tvBateria"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Batería: 100%"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:layout_marginBottom="5dp" />
+
+    <TextView
+            android:id="@+id/tvAutonomia"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Autonomía: 200 km"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:layout_marginBottom="5dp" />
+
+    <TextView
+            android:id="@+id/tvTarifa"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="0.75 €/min"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_marginBottom="20dp" />
+
+    <Button
+            android:id="@+id/btnReservarCoche"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Reservar coche"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:backgroundTint="@color/blue"
+            android:padding="16dp" />
+
+</LinearLayout>
