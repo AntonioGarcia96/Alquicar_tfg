@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app2="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    tools:context=".PerfilActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/headerContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/cabecera_perfil"
+        android:elevation="16dp"
+        android:paddingBottom="64dp"
+        app2:layout_constraintEnd_toEndOf="parent"
+        app2:layout_constraintStart_toStartOf="parent"
+        app2:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tvVolverLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="30dp"
+            android:text="← Volver"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            app2:layout_constraintStart_toStartOf="parent"
+            app2:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvPerfilTitulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="Perfil"
+            android:textColor="#FFFFFF"
+            android:textSize="36sp"
+            android:textStyle="bold"
+            app2:layout_constraintEnd_toEndOf="parent"
+            app2:layout_constraintStart_toStartOf="parent"
+            app2:layout_constraintTop_toBottomOf="@+id/tvVolverLabel" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/avatarCard"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:layout_marginTop="24dp"
+            app2:cardCornerRadius="70dp"
+            app2:cardElevation="0dp"
+            app2:strokeWidth="0dp"
+            app2:cardBackgroundColor="@android:color/transparent"
+            app2:layout_constraintEnd_toEndOf="parent"
+            app2:layout_constraintStart_toStartOf="parent"
+            app2:layout_constraintTop_toBottomOf="@+id/tvPerfilTitulo">
+
+            <ImageView
+                android:id="@+id/ivPerfilFoto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/foto_perfil" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:id="@+id/tvPerfilNombre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="James"
+            android:textColor="#FFFFFF"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            app2:layout_constraintEnd_toEndOf="parent"
+            app2:layout_constraintStart_toStartOf="parent"
+            app2:layout_constraintTop_toBottomOf="@+id/avatarCard" />
+
+        <TextView
+            android:id="@+id/tvPerfilMinutos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="35 min disponibles"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            app2:layout_constraintEnd_toEndOf="parent"
+            app2:layout_constraintStart_toStartOf="parent"
+            app2:layout_constraintTop_toBottomOf="@+id/tvPerfilNombre" />
+
+        <LinearLayout
+            android:id="@+id/statsRow"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="16dp"
+            android:orientation="horizontal"
+            android:weightSum="3"
+            app2:layout_constraintEnd_toEndOf="parent"
+            app2:layout_constraintStart_toStartOf="parent"
+            app2:layout_constraintTop_toBottomOf="@+id/tvPerfilMinutos">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Viajes\nrealizados"
+                    android:textColor="#FFFFFF"
+                    android:textSize="13sp"
+                    android:lines="2"
+                    android:gravity="center"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center_vertical">
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_marginEnd="4dp"
+                        android:src="@drawable/directions_car" />
+                    <TextView
+                        android:id="@+id/tvViajesNum"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="10"
+                        android:textColor="#FFFFFF"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Distancia\n(Km) "
+                    android:textColor="#FFFFFF"
+                    android:textSize="13sp"
+                    android:lines="2"
+                    android:gravity="center"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center_vertical">
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_marginEnd="4dp"
+                        android:src="@drawable/image_2" />
+                    <TextView
+                        android:id="@+id/tvDistanciaNum"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="200km"
+                        android:textColor="#FFFFFF"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tu ahorro\n(g)"
+                    android:textColor="#FFFFFF"
+                    android:textSize="13sp"
+                    android:lines="2"
+                    android:gravity="center"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center_vertical">
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:layout_marginEnd="2dp"
+                        android:src="@drawable/image_3" />
+                    <TextView
+                        android:id="@+id/tvAhorroNum"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="8.000"
+                        android:textColor="#FFFFFF"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnEditarDatos"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_marginTop="48dp"
+            app2:backgroundTint="@null"
+            android:background="@drawable/editar_datos_buttom"
+            android:elevation="6dp"
+            android:paddingStart="32dp"
+            android:paddingEnd="32dp"
+            android:text="Editar mis datos"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            app2:layout_constraintEnd_toEndOf="parent"
+            app2:layout_constraintStart_toStartOf="parent"
+            app2:layout_constraintTop_toBottomOf="@+id/statsRow" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/ivAlquiCarLogo"
+        android:layout_width="0dp"
+        android:layout_height="160dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginBottom="48dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/logotipo_1"
+        app2:layout_constraintBottom_toBottomOf="parent"
+        app2:layout_constraintEnd_toEndOf="parent"
+        app2:layout_constraintStart_toStartOf="parent"
+        app2:layout_constraintTop_toBottomOf="@+id/headerContainer"
+        app2:layout_constraintVertical_bias="0.5" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
