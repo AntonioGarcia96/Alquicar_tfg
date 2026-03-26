@@ -37,4 +37,22 @@ public interface AlquicarApi {
             @Field("email") String email,
             @Field("contrasenna") String contrasenna
     );
+
+    // 1. Este sirve para leer los datos (Tanto en PerfilActivity como en EditarPerfilActivity)
+    @FormUrlEncoded
+    @POST("obtener_perfil.php")
+    Call<JsonObject> obtenerPerfil(@Field("id_cliente") String idCliente);
+
+    // 2. Este sirve para guardar los cambios
+    @FormUrlEncoded
+    @POST("actualizar_perfil.php")
+    Call<JsonObject> actualizarPerfil(
+            @Field("id_cliente") String idCliente,
+            @Field("nombre") String nombre,
+            @Field("apellidos") String apellidos,
+            @Field("direccion") String direccion,
+            @Field("email") String email,
+            @Field("contrasenna") String contrasenna,
+            @Field("cuenta_bancaria") String cuentaBancaria
+    );
 }
