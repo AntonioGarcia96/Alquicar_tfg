@@ -60,5 +60,10 @@ public class MainMenuActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         });
+
+        btnAlquilarMinutos.setOnClickListener(ev ->{
+            Intent intent = new Intent(this, MapActivity.class);
+            startActivity(intent);
+        });
     }
 }
