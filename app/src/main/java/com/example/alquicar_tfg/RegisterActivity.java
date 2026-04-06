@@ -1,6 +1,7 @@
 package com.example.alquicar_tfg;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -86,7 +87,6 @@ public class RegisterActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<JsonObject> call, Throwable t) {
-                    // Error de conexión (XAMPP apagado, sin internet...)
                     Toast.makeText(RegisterActivity.this, "Error de conexión con el servidor" + t.getMessage(), Toast.LENGTH_LONG).show();
                 }
             });

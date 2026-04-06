@@ -7,14 +7,6 @@ import retrofit2.http.POST;
 import com.google.gson.JsonObject;
 
 public interface AlquicarApi {
-
-    //Llamamos al archivo login.php de Fernando
-    @FormUrlEncoded
-    @POST("login.php")
-    Call<JsonObject> loginUsuario(
-            @Field("correo") String correo
-    );
-
     //Llamamos al archivo de registro
     @FormUrlEncoded
     @POST("registro.php")
