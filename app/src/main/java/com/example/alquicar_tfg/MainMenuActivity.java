@@ -8,27 +8,33 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class MainMenuActivity extends AppCompatActivity {
 
+    private String idClienteFinal; // Guardaremos el ID aquí bien seguro
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
 
-        // 1. Buscamos los elementos del XML
+        // Buscamos los elementos del XML
         TextView tvSaludo = findViewById(R.id.tvSaludo);
         TextView tvMinutos = findViewById(R.id.tvMinutos);
         Button btnAlquilarMinutos = findViewById(R.id.btnAlquilarMinutos);
-
-        // --- AQUÍ BUSCAMOS EL BOTÓN DE PERFIL ---
         Button btnPerfil = findViewById(R.id.btnPerfil);
-
         TextView tvCerrarSesion = findViewById(R.id.tvCerrarSesion);
 
-        // 2. Abrimos la "mochila" del Intent y sacamos los datos que vienen del LOGIN
-        String idCliente = getIntent().getStringExtra("ID_CLIENTE"); // IMPORTANTE
+        //  EL TRUCO SALVAVIDAS PARA EL ID
+        if (getIntent().hasExtra("ID_CLIENTE")) {
+            Object idObject = getIntent().getExtras().get("ID_CLIENTE");
+            if (idObject != null) {
+                idClienteFinal = String.valueOf(idObject);
+            }
+        }
+
+        // Sacamos nombre y minutos (esto sí viaja bien como texto)
         String nombre = getIntent().getStringExtra("NOMBRE_USUARIO");
         String minutos = getIntent().getStringExtra("MINUTOS_USUARIO");
 
-        // 3. Pintamos los datos en la pantalla principal
+        // Pintamos los datos en la pantalla principal
         if (nombre != null) {
             tvSaludo.setText("Hola " + nombre);
         }
@@ -38,20 +44,19 @@ public class MainMenuActivity extends AppCompatActivity {
 
         // --- FUNCIONES DE LOS BOTONES ---
 
-        // Botón para ir al PERFIL (Le pasamos el ID)
+        // Botón para ir al PERFIL
         btnPerfil.setOnClickListener(v -> {
             Intent intent = new Intent(MainMenuActivity.this, PerfilActivity.class);
-            intent.putExtra("ID_CLIENTE", idCliente); // Le pasamos el ID para que PerfilActivity sepa quién eres
+            intent.putExtra("ID_CLIENTE", idClienteFinal); // Pasamos el ID seguro
             startActivity(intent);
         });
 
-        // Botón para Alquilar (Mapa)
-        /*
-        btnAlquilarMinutos.setOnClickListener(v -> {
+        // Botón para Alquilar (Mapa) CORREGIDO
+        btnAlquilarMinutos.setOnClickListener(ev ->{
             Intent intent = new Intent(MainMenuActivity.this, MapActivity.class);
+            intent.putExtra("ID_CLIENTE", idClienteFinal); // ¡Súper importante para guardar el viaje luego!
             startActivity(intent);
         });
-        */
 
         // Cerrar sesión
         tvCerrarSesion.setOnClickListener(v -> {
@@ -59,11 +64,6 @@ public class MainMenuActivity extends AppCompatActivity {
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();
-        });
-
-        btnAlquilarMinutos.setOnClickListener(ev ->{
-            Intent intent = new Intent(this, MapActivity.class);
-            startActivity(intent);
         });
     }
 }
