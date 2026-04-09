@@ -59,16 +59,22 @@ public class MainActivity extends AppCompatActivity {
                     String status = response.body().get("status").getAsString();
 
                     if (status.equals("success")) {
-                        // NUEVO: Extraemos el nombre y los minutos del JSON que nos manda Fernando
+                        // Extraemos TODO lo que nos manda el PHP
                         String nombreUsuario = response.body().get("nombre").getAsString();
                         String minutosUsuario = response.body().get("minutos_disponibles").getAsString();
+
+                        // NUEVO: Extraemos el ID_CLIENTE
+                        String idUsuario = response.body().get("id_cliente").getAsString();
 
                         // Preparamos el viaje
                         Intent intent = new Intent(MainActivity.this, MainMenuActivity.class);
 
-                        // NUEVO: Metemos los datos en la "mochila" del Intent usando putExtra
+                        // Metemos los datos en la "mochila" del Intent
                         intent.putExtra("NOMBRE_USUARIO", nombreUsuario);
                         intent.putExtra("MINUTOS_USUARIO", minutosUsuario);
+
+                        // NUEVO: Metemos el ID en la mochila
+                        intent.putExtra("ID_CLIENTE", idUsuario);
 
                         startActivity(intent);
                         finish();

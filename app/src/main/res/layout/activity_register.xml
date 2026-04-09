@@ -40,104 +40,103 @@
                 android:id="@+id/etDniReg"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:hint="DNI"
+                android:layout_marginBottom="16dp"
                 android:background="@android:drawable/editbox_background"
-                android:padding="12dp"
-                android:layout_marginBottom="16dp"/>
+                android:hint="DNI"
+                android:padding="12dp" />
 
             <EditText
                 android:id="@+id/etNombreReg"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:hint="Nombre"
+                android:layout_marginBottom="16dp"
                 android:background="@android:drawable/editbox_background"
-                android:padding="12dp"
-                android:layout_marginBottom="16dp"/>
+                android:hint="Nombre"
+                android:padding="12dp" />
 
             <EditText
                 android:id="@+id/etApellidosReg"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:hint="Apellidos"
+                android:layout_marginBottom="16dp"
                 android:background="@android:drawable/editbox_background"
-                android:padding="12dp"
-                android:layout_marginBottom="16dp"/>
+                android:hint="Apellidos"
+                android:padding="12dp" />
 
             <EditText
-                    android:id="@+id/etFecha"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="date"
-                    android:hint="YYYY-MM-DD"
-                    android:background="@android:drawable/editbox_background"
-                    android:ems="10"
-                    android:padding="12dp"
-                    android:layout_marginBottom="16dp"
-                     />
+                android:id="@+id/etFecha"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:background="@android:drawable/editbox_background"
+                android:ems="10"
+                android:hint="YYYY-MM-DD"
+                android:inputType="date"
+                android:padding="12dp" />
 
             <EditText
                 android:id="@+id/etDireccionReg"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:hint="Dirección (Calle y número)"
+                android:layout_marginBottom="16dp"
                 android:background="@android:drawable/editbox_background"
-                android:padding="12dp"
-                android:layout_marginBottom="16dp"/>
+                android:hint="Dirección (Calle y número)"
+                android:padding="12dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="16dp">
+                android:layout_marginBottom="16dp"
+                android:orientation="horizontal">
 
                 <EditText
                     android:id="@+id/etTelefono"
                     android:layout_width="0dp"
                     android:layout_height="50dp"
                     android:layout_weight="1"
-                    android:hint="Teléfono"
                     android:background="@android:drawable/editbox_background"
-                    android:padding="12dp"/>
+                    android:hint="Teléfono"
+                    android:padding="12dp" />
             </LinearLayout>
 
             <EditText
                 android:id="@+id/etEmailReg"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                android:layout_marginBottom="16dp"
+                android:background="@android:drawable/editbox_background"
                 android:hint="Correo electrónico"
                 android:inputType="textEmailAddress"
-                android:background="@android:drawable/editbox_background"
-                android:padding="12dp"
-                android:layout_marginBottom="16dp"/>
+                android:padding="12dp" />
 
             <EditText
                 android:id="@+id/etPasswordReg"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                android:layout_marginBottom="16dp"
+                android:background="@android:drawable/editbox_background"
                 android:hint="Contraseña"
                 android:inputType="textPassword"
-                android:background="@android:drawable/editbox_background"
-                android:padding="12dp"
-                android:layout_marginBottom="16dp"/>
+                android:padding="12dp" />
 
             <EditText
                 android:id="@+id/etIbanReg"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:hint="Número de cuenta bancaria (IBAN)"
+                android:layout_marginBottom="32dp"
                 android:background="@android:drawable/editbox_background"
-                android:padding="12dp"
-                android:layout_marginBottom="32dp"/>
+                android:hint="Número de cuenta bancaria (IBAN)"
+                android:padding="12dp" />
 
             <Button
                 android:id="@+id/btnRegistrarUsuario"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:text="Registrarse"
+                android:layout_marginBottom="16dp"
                 android:backgroundTint="#00E676"
+                android:text="Registrarse"
                 android:textColor="#FFFFFF"
-                android:textStyle="bold"
-                android:layout_marginBottom="16dp"/>
+                android:textStyle="bold" />
 
         </LinearLayout>
     </LinearLayout>

@@ -7,14 +7,6 @@ import retrofit2.http.POST;
 import com.google.gson.JsonObject;
 
 public interface AlquicarApi {
-
-    //Llamamos al archivo login.php de Fernando
-    @FormUrlEncoded
-    @POST("login.php")
-    Call<JsonObject> loginUsuario(
-            @Field("correo") String correo
-    );
-
     //Llamamos al archivo de registro
     @FormUrlEncoded
     @POST("registro.php")
@@ -36,5 +28,34 @@ public interface AlquicarApi {
     Call<JsonObject> loginUsuario(
             @Field("email") String email,
             @Field("contrasenna") String contrasenna
+    );
+
+    // Este sirve para leer los datos (Tanto en PerfilActivity como en EditarPerfilActivity)
+    @FormUrlEncoded
+    @POST("obtener_perfil.php")
+    Call<JsonObject> obtenerPerfil(@Field("id_cliente") String idCliente);
+
+    // Este sirve para guardar los cambios
+    @FormUrlEncoded
+    @POST("actualizar_perfil.php")
+    Call<JsonObject> actualizarPerfil(
+            @Field("id_cliente") String idCliente,
+            @Field("nombre") String nombre,
+            @Field("apellidos") String apellidos,
+            @Field("direccion") String direccion,
+            @Field("email") String email,
+            @Field("contrasenna") String contrasenna,
+            @Field("cuenta_bancaria") String cuentaBancaria
+    );
+
+    // Llamada para guardar un viaje cuando el usuario le da a "Terminar"
+    @FormUrlEncoded
+    @POST("registrar_viaje.php")
+    Call<JsonObject> registrarViaje(
+            @Field("id_cliente") String idCliente,
+            @Field("minutos_gastados") int minutos, // Esto lo usará él para restar
+            @Field("recorrido") double recorrido,   // Cambiado: coincide con su columna
+            @Field("coste") double coste,           // Cambiado: coincide con su columna
+            @Field("ahorro_co2") int co2            // Esta tendrá que añadirla él (es nueva)
     );
 }
