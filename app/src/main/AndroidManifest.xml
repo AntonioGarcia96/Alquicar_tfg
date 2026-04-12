@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
             android:allowBackup="true"
@@ -15,6 +15,9 @@
             android:supportsRtl="true"
             android:theme="@style/Theme.Alquicar_tfg"
             android:usesCleartextTraffic="true">
+        <activity
+                android:name=".JourneyOverviewActivity"
+                android:exported="false" />
         <activity
                 android:name=".MapActivity"
                 android:exported="false" />
@@ -42,7 +45,7 @@
 
         <meta-data
                 android:name="com.google.android.geo.API_KEY"
-                android:value="AIzaSyCED6UmZj48UtL7gCwVB8rLwIVZjnV7K-w"/>
+                android:value="AIzaSyCED6UmZj48UtL7gCwVB8rLwIVZjnV7K-w" />
     </application>
 
 </manifest>

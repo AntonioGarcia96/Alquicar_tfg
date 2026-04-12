@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/journey_overview"
+        tools:context=".JourneyOverviewActivity"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:padding="20dp">
+
+<!--    <ProgressBar-->
+<!--            style="?android:attr/progressBarStyleHorizontal"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:id="@+id/progressBar"-->
+<!--            android:layout_gravity="center"-->
+<!--            />-->
+
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_margin="15dp"
+            android:background="@drawable/fondo_bottom_sheet_dialog"
+            android:padding="15dp"
+            android:backgroundTint="@color/blue"
+            android:elevation="15dp">
+
+        <TextView
+                android:layout_marginBottom="5dp"
+                android:id="@+id/tvTituloViaje"
+                android:text="Tu viaje"
+                android:textStyle="bold"
+                android:textSize="30dp"
+                android:textColor="@color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        <TextView
+                android:id="@+id/tvFechaViaje"
+                android:padding="5dp"
+                android:textStyle="bold"
+                android:text="01/01/2026   -   08:30 h"
+                android:textColor="@color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="30dp"/>
+
+        <TextView
+                android:id="@+id/tvRecorrido"
+                android:padding="5dp"
+                android:text="Recorrido: 10.5 km"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"/>
+
+        <TextView
+                android:id="@+id/tvTiempo"
+                android:padding="5dp"
+                android:text="Tiempo del viaje: 25 min"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"/>
+
+        <TextView
+                android:id="@+id/tvCoste"
+                android:padding="5dp"
+                android:text="Total: 17,5 €"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"/>
+
+        <TextView
+                android:id="@+id/tvAhorroCo2"
+                android:padding="5dp"
+                android:text="Has ahorrado 530g CO2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/seat_mii"/>
+    </LinearLayout>
+
+
+</LinearLayout>
+
