@@ -30,12 +30,12 @@ public interface AlquicarApi {
             @Field("contrasenna") String contrasenna
     );
 
-    // 1. Este sirve para leer los datos (Tanto en PerfilActivity como en EditarPerfilActivity)
+    // Este sirve para leer los datos (Tanto en PerfilActivity como en EditarPerfilActivity)
     @FormUrlEncoded
     @POST("obtener_perfil.php")
     Call<JsonObject> obtenerPerfil(@Field("id_cliente") String idCliente);
 
-    // 2. Este sirve para guardar los cambios
+    // Este sirve para guardar los cambios
     @FormUrlEncoded
     @POST("actualizar_perfil.php")
     Call<JsonObject> actualizarPerfil(
@@ -46,5 +46,16 @@ public interface AlquicarApi {
             @Field("email") String email,
             @Field("contrasenna") String contrasenna,
             @Field("cuenta_bancaria") String cuentaBancaria
+    );
+
+    // Llamada para guardar un viaje cuando el usuario le da a "Terminar"
+    @FormUrlEncoded
+    @POST("registrar_viaje.php")
+    Call<JsonObject> registrarViaje(
+            @Field("id_cliente") String idCliente,
+            @Field("minutos_gastados") int minutos, // Esto lo usará él para restar
+            @Field("recorrido") double recorrido,   // Cambiado: coincide con su columna
+            @Field("coste") double coste,           // Cambiado: coincide con su columna
+            @Field("ahorro_co2") int co2            // Esta tendrá que añadirla él (es nueva)
     );
 }
