@@ -1,8 +1,9 @@
 package com.example.alquicar_tfg;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -29,17 +30,18 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import com.example.alquicar_tfg.api.AlquicarApi;
 import com.example.alquicar_tfg.api.RetrofitClient;
 import com.google.gson.JsonObject;
+
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -56,7 +58,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private LocationManager locationManager;
     private Location currentLocation;
 
-    // ⭐ Variables para cronómetro flotante ⭐
+    // Variables para cronómetro flotante
     private View cardViajeActivo;
     private TextView tvTiempoCronometro, tvPrecioCronometro;
     private Button btnTerminarViajeFlotante;
@@ -170,7 +172,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         dialogActual.show();
     }
 
-    // ⭐ NUEVO: MOTOR DEL CRONÓMETRO VISUAL ⭐
     private void arrancarRelojVisual() {
         if (cardViajeActivo != null) {
             cardViajeActivo.setVisibility(View.VISIBLE); // Mostramos la tarjeta
@@ -255,7 +256,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private void enviarDatosViaje(int minutos, double distancia, int co2) {
         if (idCliente == null) return;
 
-        // Calculamos el coste aquí para mandárselo ya "masticado" a Fernando
         double costeFinal = minutos * 0.70;
 
         AlquicarApi api = RetrofitClient.getClient().create(AlquicarApi.class);
@@ -291,11 +291,19 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         getLocationPermission();
 
         LatLng sevilla = new LatLng(37.3891, -5.9845);
-        LatLng coche1 = new LatLng(37.401066213722494, -5.975189283196233);
+        LatLng coche1 = new LatLng(37.39879385580851, -5.972624036123549);
+
+        Bitmap original = BitmapFactory.decodeResource(getResources(), R.drawable.marker_coche);
+        Bitmap scaled = Bitmap.createScaledBitmap(original, 100, 100, false);
 
         mapa.moveCamera(CameraUpdateFactory.newLatLngZoom(sevilla, 14f));
-        mapa.addMarker(new MarkerOptions().position(coche1).title("Seat Mii").snippet("1234TFG"));
         mapa.setOnMarkerClickListener(this);
+
+        mapa.addMarker(new MarkerOptions().position(coche1).icon(BitmapDescriptorFactory.fromBitmap(scaled)).anchor(0.5f, 0.5f));
+
+//        for(LatLng coche: flota){
+//            mapa.addMarker(new MarkerOptions().position(coche).icon(BitmapDescriptorFactory.fromBitmap(scaled)).anchor(0.5f, 0.5f));
+//        }
     }
 
     @Override
