@@ -21,6 +21,8 @@ public class MainMenuActivity extends AppCompatActivity {
         Button btnAlquilarMinutos = findViewById(R.id.btnAlquilarMinutos);
         Button btnPerfil = findViewById(R.id.btnPerfil);
         TextView tvCerrarSesion = findViewById(R.id.tvCerrarSesion);
+        Button btnHistorial = findViewById(R.id.btnHistorial);
+
 
         //  EL TRUCO SALVAVIDAS PARA EL ID
         if (getIntent().hasExtra("ID_CLIENTE")) {
@@ -64,6 +66,17 @@ public class MainMenuActivity extends AppCompatActivity {
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();
+        });
+
+        // Suponiendo que tu botón se llama btnMenuHistorial
+        btnHistorial.setOnClickListener(v -> {
+            // El Intent es el "billete de tren" para ir a otra pantalla
+            Intent intent = new Intent(MainMenuActivity.this, HistorialActivity.class);
+
+            // Si necesitas pasarle el ID del cliente para luego buscar sus viajes reales:
+            // intent.putExtra("ID_CLIENTE", idCliente);
+
+            startActivity(intent);
         });
     }
 }

@@ -26,7 +26,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         etCorreo = findViewById(R.id.etCorreo);
-        // ¡Aquí está el cambio! Enlazamos con el ID exacto de Bryan: etContrasenna
         etPassword = findViewById(R.id.etContrasenna);
         btnContinuar = findViewById(R.id.btContinuar);
 
@@ -65,6 +64,9 @@ public class MainActivity extends AppCompatActivity {
 
                         // NUEVO: Extraemos el ID_CLIENTE
                         String idUsuario = response.body().get("id_cliente").getAsString();
+
+                        android.content.SharedPreferences prefs = getSharedPreferences("UsuarioAlquiCar", MODE_PRIVATE);
+                        prefs.edit().putString("ID_SESION", idUsuario).apply();
 
                         // Preparamos el viaje
                         Intent intent = new Intent(MainActivity.this, MainMenuActivity.class);

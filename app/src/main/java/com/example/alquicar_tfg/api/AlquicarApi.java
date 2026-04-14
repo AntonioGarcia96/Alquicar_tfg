@@ -6,7 +6,13 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
 import com.google.gson.JsonObject;
 
+import java.util.List;
+
 public interface AlquicarApi {
+
+    @FormUrlEncoded
+    @POST("obtener_historial.php")
+    Call<List<JsonObject>> obtenerHistorial(@Field("id_cliente") String idCliente);
     //Llamamos al archivo de registro
     @FormUrlEncoded
     @POST("registro.php")
@@ -53,9 +59,10 @@ public interface AlquicarApi {
     @POST("registrar_viaje.php")
     Call<JsonObject> registrarViaje(
             @Field("id_cliente") String idCliente,
-            @Field("minutos_gastados") int minutos, // Esto lo usará él para restar
-            @Field("recorrido") double recorrido,   // Cambiado: coincide con su columna
-            @Field("coste") double coste,           // Cambiado: coincide con su columna
-            @Field("ahorro_co2") int co2            // Esta tendrá que añadirla él (es nueva)
+            @Field("id_vehiculo") int idVehiculo, // NUEVO
+            @Field("modalidad") String modalidad, // NUEVO
+            @Field("recorrido") double recorrido,
+            @Field("coste") double coste,
+            @Field("co2") int co2
     );
 }
