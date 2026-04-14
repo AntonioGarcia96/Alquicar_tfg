@@ -1,8 +1,9 @@
 package com.example.alquicar_tfg;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -29,17 +30,18 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import com.example.alquicar_tfg.api.AlquicarApi;
 import com.example.alquicar_tfg.api.RetrofitClient;
 import com.google.gson.JsonObject;
+
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -56,7 +58,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private LocationManager locationManager;
     private Location currentLocation;
 
-    // ⭐ Variables para cronómetro flotante ⭐
+    // Variables para cronómetro flotante
     private View cardViajeActivo;
     private TextView tvTiempoCronometro, tvPrecioCronometro;
     private Button btnTerminarViajeFlotante;
@@ -170,7 +172,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         dialogActual.show();
     }
 
-    // ⭐ NUEVO: MOTOR DEL CRONÓMETRO VISUAL ⭐
     private void arrancarRelojVisual() {
         if (cardViajeActivo != null) {
             cardViajeActivo.setVisibility(View.VISIBLE); // Mostramos la tarjeta
@@ -255,22 +256,22 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private void enviarDatosViaje(int minutos, double distancia, int co2) {
         if (idCliente == null) return;
 
-        // Calculamos el coste aquí para mandárselo ya "masticado" a Fernando
         double costeFinal = minutos * 0.70;
+
+        // De momento ponemos el ID del vehículo a 1 fijo hasta que hagamos la selección real
+        int idVehiculoFalso = 1;
+        String modalidad = "MINUTOS";
 
         AlquicarApi api = RetrofitClient.getClient().create(AlquicarApi.class);
 
-        // id_cliente, minutos, recorrido (distancia), coste, ahorro_co2
-        api.registrarViaje(idCliente, minutos, distancia, costeFinal, co2).enqueue(new Callback<JsonObject>() {
+        // ¡Fíjate que ahora pasamos los 6 parámetros en el orden correcto!
+        api.registrarViaje(idCliente, idVehiculoFalso, modalidad, distancia, costeFinal, co2).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     JsonObject result = response.body();
                     if (result.get("status").getAsString().equals("success")) {
-
-                        // Aquí es donde abriremos la pantalla de Resumen más adelante
                         Toast.makeText(MapActivity.this, "¡Viaje finalizado con éxito!", Toast.LENGTH_LONG).show();
-
                         finish();
                     } else {
                         Toast.makeText(MapActivity.this, "Error: " + result.get("message").getAsString(), Toast.LENGTH_LONG).show();
@@ -291,11 +292,16 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         getLocationPermission();
 
         LatLng sevilla = new LatLng(37.3891, -5.9845);
-        LatLng coche1 = new LatLng(37.401066213722494, -5.975189283196233);
+        LatLng coche1 = new LatLng(37.39879385580851, -5.972624036123549);
 
         mapa.moveCamera(CameraUpdateFactory.newLatLngZoom(sevilla, 14f));
-        mapa.addMarker(new MarkerOptions().position(coche1).title("Seat Mii").snippet("1234TFG"));
         mapa.setOnMarkerClickListener(this);
+
+        // 👇 ESTA ES LA LÍNEA CORREGIDA. Ya no hay rastro de la palabra "scaled"
+        mapa.addMarker(new MarkerOptions()
+                .position(coche1)
+                .icon(obtenerIconoCoche(R.drawable.icono_coche_mapa))
+                .anchor(0.5f, 0.5f));
     }
 
     @Override
@@ -349,5 +355,34 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 Log.e("Permiso no concedido. ", e.getMessage());
             }
         }
+    }
+    // Función mejorada para leer el icono sin que se deforme
+    private com.google.android.gms.maps.model.BitmapDescriptor obtenerIconoCoche(int idImagen) {
+        android.graphics.drawable.Drawable vectorDrawable = androidx.core.content.ContextCompat.getDrawable(this, idImagen);
+        if (vectorDrawable == null) return null;
+
+        // 1. Obtenemos el ancho y alto ORIGINAL del archivo
+        int anchoOriginal = vectorDrawable.getIntrinsicWidth();
+        int altoOriginal = vectorDrawable.getIntrinsicHeight();
+
+        // Medida de seguridad por si el archivo no tiene tamaño por defecto
+        if (anchoOriginal <= 0 || altoOriginal <= 0) {
+            anchoOriginal = 100;
+            altoOriginal = 100;
+        }
+
+        // 👇 2. AQUÍ ELIGES EL TAMAÑO (Cámbialo si lo ves muy grande o pequeño)
+        int anchoDeseado = 300;
+
+        // 3. Calculamos el alto con una regla de 3 para que no se deforme
+        int altoCalculado = (altoOriginal * anchoDeseado) / anchoOriginal;
+
+        // 4. Dibujamos el icono final
+        vectorDrawable.setBounds(0, 0, anchoDeseado, altoCalculado);
+        android.graphics.Bitmap bitmap = android.graphics.Bitmap.createBitmap(anchoDeseado, altoCalculado, android.graphics.Bitmap.Config.ARGB_8888);
+        android.graphics.Canvas canvas = new android.graphics.Canvas(bitmap);
+        vectorDrawable.draw(canvas);
+
+        return com.google.android.gms.maps.model.BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 }
