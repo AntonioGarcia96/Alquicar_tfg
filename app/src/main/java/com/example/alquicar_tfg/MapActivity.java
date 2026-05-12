@@ -94,7 +94,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         tvPrecioCronometro = findViewById(R.id.tvPrecioCronometro);
         btnTerminarViajeFlotante = findViewById(R.id.btnTerminarViajeFlotante);
 
-        // Si pulsamos el botón rojo de la tarjeta flotante, terminamos el viaje
         if (btnTerminarViajeFlotante != null) {
             btnTerminarViajeFlotante.setOnClickListener(v -> terminarViaje());
         }

@@ -84,12 +84,14 @@
     </LinearLayout>
 
     <LinearLayout
+            android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
         <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:src="@drawable/seat_mii"
                 />
     </LinearLayout>
 
