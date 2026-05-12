@@ -27,7 +27,7 @@
 
     <Button android:id="@+id/btnPerfil" android:layout_width="match_parent" android:layout_height="60dp" android:text="Perfil" android:layout_marginBottom="12dp" android:backgroundTint="#1E88E5" android:textColor="#FFFFFF"/>
     <Button android:id="@+id/btnAlquilarMinutos" android:layout_width="match_parent" android:layout_height="60dp" android:text="Alquilar por minutos" android:layout_marginBottom="12dp" android:backgroundTint="#1E88E5" android:textColor="#FFFFFF"/>
-    <Button android:id="@+id/btnAlquilarDia" android:layout_width="match_parent" android:layout_height="60dp" android:text="Alquilar por dia" android:layout_marginBottom="12dp" android:backgroundTint="#1E88E5" android:textColor="#FFFFFF"/>
+    <Button android:id="@+id/btnAlquilarDia" android:layout_width="match_parent" android:visibility="gone" android:layout_height="60dp" android:text="Alquilar por dia" android:layout_marginBottom="12dp" android:backgroundTint="#1E88E5" android:textColor="#FFFFFF"/>
     <Button android:id="@+id/btnBonos" android:layout_width="match_parent" android:layout_height="60dp" android:text="Bonos" android:layout_marginBottom="12dp" android:backgroundTint="#1E88E5" android:textColor="#FFFFFF"/>
     <Button android:id="@+id/btnHistorial" android:layout_width="match_parent" android:layout_height="60dp" android:text="Historial de viajes" android:layout_marginBottom="12dp" android:backgroundTint="#1E88E5" android:textColor="#FFFFFF"/>
     <Button android:id="@+id/btnAtencion" android:layout_width="match_parent" android:layout_height="60dp" android:text="Atención al cliente" android:layout_marginBottom="32dp" android:backgroundTint="#1E88E5" android:textColor="#FFFFFF"/>

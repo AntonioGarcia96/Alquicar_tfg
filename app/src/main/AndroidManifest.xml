@@ -16,6 +16,12 @@
         android:theme="@style/Theme.Alquicar_tfg"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".BonosActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AtencionClienteActivity"
+            android:exported="false" />
+        <activity
             android:name=".HistorialActivity"
             android:exported="false" />
         <activity
