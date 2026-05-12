@@ -6,15 +6,13 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
 import com.google.gson.JsonObject;
 
+import java.util.List;
+
 public interface AlquicarApi {
 
-    //Llamamos al archivo login.php de Fernando
     @FormUrlEncoded
-    @POST("login.php")
-    Call<JsonObject> loginUsuario(
-            @Field("correo") String correo
-    );
-
+    @POST("obtener_historial.php")
+    Call<List<JsonObject>> obtenerHistorial(@Field("id_cliente") String idCliente);
     //Llamamos al archivo de registro
     @FormUrlEncoded
     @POST("registro.php")
@@ -32,18 +30,27 @@ public interface AlquicarApi {
 
     );
     @FormUrlEncoded
+    @POST("actualizar_minutos.php")
+    Call<JsonObject> actualizarMinutos(
+            @Field("id_cliente") String idCliente,
+            @Field("minutos_restantes") int minutosRestantes
+    );
+    @FormUrlEncoded
+    @POST("comprar_bono.php")
+    Call<JsonObject> comprarBono(@Field("id_cliente") String idCliente, @Field("minutos") int minutos);
+    @FormUrlEncoded
     @POST("login.php")
     Call<JsonObject> loginUsuario(
             @Field("email") String email,
             @Field("contrasenna") String contrasenna
     );
 
-    // 1. Este sirve para leer los datos (Tanto en PerfilActivity como en EditarPerfilActivity)
+    // Este sirve para leer los datos (Tanto en PerfilActivity como en EditarPerfilActivity)
     @FormUrlEncoded
     @POST("obtener_perfil.php")
     Call<JsonObject> obtenerPerfil(@Field("id_cliente") String idCliente);
 
-    // 2. Este sirve para guardar los cambios
+    // Este sirve para guardar los cambios
     @FormUrlEncoded
     @POST("actualizar_perfil.php")
     Call<JsonObject> actualizarPerfil(
@@ -54,5 +61,17 @@ public interface AlquicarApi {
             @Field("email") String email,
             @Field("contrasenna") String contrasenna,
             @Field("cuenta_bancaria") String cuentaBancaria
+    );
+
+    // Llamada para guardar un viaje cuando el usuario le da a "Terminar"
+    @FormUrlEncoded
+    @POST("registrar_viaje.php")
+    Call<JsonObject> registrarViaje(
+            @Field("id_cliente") String idCliente,
+            @Field("id_vehiculo") int idVehiculo, // NUEVO
+            @Field("modalidad") String modalidad, // NUEVO
+            @Field("recorrido") double recorrido,
+            @Field("coste") double coste,
+            @Field("co2") int co2
     );
 }

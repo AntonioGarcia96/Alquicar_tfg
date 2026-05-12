@@ -125,7 +125,7 @@
                         android:layout_width="18dp"
                         android:layout_height="18dp"
                         android:layout_marginEnd="4dp"
-                        android:src="@drawable/directions_car" />
+                        android:src="@drawable/ic_car" />
                     <TextView
                         android:id="@+id/tvViajesNum"
                         android:layout_width="wrap_content"
