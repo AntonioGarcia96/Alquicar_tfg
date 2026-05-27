@@ -6,8 +6,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-
-// IMPORTANTE: Asegúrate de que las rutas a tu API son correctas
 import com.example.alquicar_tfg.api.AlquicarApi;
 import com.example.alquicar_tfg.api.RetrofitClient;
 
@@ -26,10 +24,10 @@ public class EditarPerfilActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this); // Deja esto para que ocupe toda la pantalla
+        EdgeToEdge.enable(this); 
         setContentView(R.layout.activity_editar_perfil);
 
-        // 1. Enlazamos las variables con los IDs de nuestro XML
+        // Enlazamos las variables con los IDs de nuestro XML
         etNombre = findViewById(R.id.etEditarNombre);
         etApellidos = findViewById(R.id.etEditarApellidos);
         etDireccion = findViewById(R.id.etEditarDireccion);
@@ -40,11 +38,9 @@ public class EditarPerfilActivity extends AppCompatActivity {
         Button btnGuardar = findViewById(R.id.btnGuardarCambios);
         TextView tvVolver = findViewById(R.id.tvVolverEditar);
 
-        // 2. Le damos vida al botón de "Volver"
+
         tvVolver.setOnClickListener(v -> finish()); // finish() cierra esta pantalla y vuelve a la anterior
 
-        // 🔥 3. EL TRUCO SALVAVIDAS PARA RECOGER EL ID 🔥
-        // Da igual si viene como número o texto, lo atrapamos y lo convertimos a String
         if (getIntent().hasExtra("ID_CLIENTE")) {
             Object idObject = getIntent().getExtras().get("ID_CLIENTE");
             if (idObject != null) {
@@ -52,18 +48,16 @@ public class EditarPerfilActivity extends AppCompatActivity {
             }
         }
 
-        // 4. Comprobamos si el truco funcionó
         if (idCliente != null && !idCliente.equals("-1")) {
             cargarDatosUsuario(); // ¡Llamamos a la BD para rellenar las cajas!
         } else {
             Toast.makeText(this, "Error: No se encontró el ID del usuario", Toast.LENGTH_SHORT).show();
         }
 
-        // 5. Acción al pulsar el botón "Guardar cambios"
         btnGuardar.setOnClickListener(v -> guardarDatosUsuario());
     }
 
-    // --- FUNCIÓN PARA RELLENAR LOS DATOS AL ENTRAR ---
+    // FUNCIÓN PARA RELLENAR LOS DATOS AL ENTRAR
     private void cargarDatosUsuario() {
         AlquicarApi api = RetrofitClient.getClient().create(AlquicarApi.class);
 
@@ -103,7 +97,7 @@ public class EditarPerfilActivity extends AppCompatActivity {
         });
     }
 
-    // --- FUNCIÓN PARA GUARDAR LOS CAMBIOS EN LA BASE DE DATOS ---
+    // FUNCIÓN PARA GUARDAR LOS CAMBIOS EN LA BASE DE DATOS
     private void guardarDatosUsuario() {
         // Recogemos el texto que el usuario ha escrito en las cajas
         String nombre = etNombre.getText().toString().trim();
