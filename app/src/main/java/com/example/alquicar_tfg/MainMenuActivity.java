@@ -7,7 +7,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
-// IMPORTANTE: Asegúrate de tener estos imports para que Retrofit funcione
 import com.example.alquicar_tfg.api.AlquicarApi;
 import com.example.alquicar_tfg.api.RetrofitClient;
 import com.google.gson.JsonObject;
@@ -18,7 +17,6 @@ import retrofit2.Response;
 public class MainMenuActivity extends AppCompatActivity {
 
     private String idClienteFinal;
-    // 1. Sacamos las variables aquí fuera para que funcionen en toda la clase
     private TextView tvSaludo;
     private TextView tvMinutos;
 
@@ -27,7 +25,6 @@ public class MainMenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
 
-        // 2. Enlazamos los elementos del XML
         tvSaludo = findViewById(R.id.tvSaludo);
         tvMinutos = findViewById(R.id.tvMinutos);
         Button btnAlquilarMinutos = findViewById(R.id.btnAlquilarMinutos);
@@ -83,16 +80,14 @@ public class MainMenuActivity extends AppCompatActivity {
         });
     }
 
-    // 👇 MÉTODO ONRESUME MODIFICADO 👇
     @Override
     protected void onResume() {
         super.onResume();
 
-        // Cada vez que la pantalla vuelva a aparecer, le preguntamos al servidor
+
         if (idClienteFinal != null && !idClienteFinal.isEmpty()) {
             actualizarDatosDesdeServidor();
         } else {
-            // Si por algún motivo no tenemos ID, leemos de local por seguridad
             SharedPreferences prefs = getSharedPreferences("UsuarioAlquiCar", MODE_PRIVATE);
             String nombre = prefs.getString("NOMBRE_USUARIO", "Usuario");
             String minutos = prefs.getString("MINUTOS_USUARIO", "0");
@@ -101,11 +96,11 @@ public class MainMenuActivity extends AppCompatActivity {
         }
     }
 
-    // 👇 NUEVO MÉTODO PARA LLAMAR A LA BASE DE DATOS 👇
+
     private void actualizarDatosDesdeServidor() {
         AlquicarApi api = RetrofitClient.getClient().create(AlquicarApi.class);
 
-        // Hacemos la llamada al PHP de Fernando usando el ID del cliente
+
         api.obtenerPerfil(idClienteFinal).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
@@ -113,15 +108,15 @@ public class MainMenuActivity extends AppCompatActivity {
                     JsonObject data = response.body();
 
                     if (data.has("status") && data.get("status").getAsString().equals("success")) {
-                        // 1. Extraemos los datos REALES de la base de datos
+
                         String minutosReales = data.get("minutos_disponibles").getAsString();
                         String nombreReal = data.get("nombre").getAsString();
 
-                        // 2. Pintamos los datos en la pantalla
+
                         if (tvSaludo != null) tvSaludo.setText("Hola " + nombreReal);
                         if (tvMinutos != null) tvMinutos.setText("Tienes disponibles " + minutosReales + " minutos");
 
-                        // 3. Actualizamos la caja fuerte local para que el resto de pantallas también lo sepan
+
                         SharedPreferences prefs = getSharedPreferences("UsuarioAlquiCar", MODE_PRIVATE);
                         prefs.edit()
                                 .putString("MINUTOS_USUARIO", minutosReales)
@@ -133,7 +128,7 @@ public class MainMenuActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-                // Si falla internet, ponemos lo que teníamos guardado localmente como respaldo
+
                 SharedPreferences prefs = getSharedPreferences("UsuarioAlquiCar", MODE_PRIVATE);
                 String minutosGuardados = prefs.getString("MINUTOS_USUARIO", "0");
                 if (tvMinutos != null) tvMinutos.setText("Tienes disponibles " + minutosGuardados + " minutos");

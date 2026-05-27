@@ -83,7 +83,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_map);
 
-        // 1. Recogemos el ID
+        // Recogemos el ID
         if (getIntent().hasExtra("ID_CLIENTE")) {
             Object idObject = getIntent().getExtras().get("ID_CLIENTE");
             if (idObject != null) {
@@ -91,12 +91,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             }
         }
 
-        // LEEMOS LOS MINUTOS DISPONIBLES AL ABRIR EL MAPA
-        SharedPreferences prefs = getSharedPreferences("UsuarioAlquiCar", MODE_PRIVATE);
-        String minutosGuardados = prefs.getString("MINUTOS_USUARIO", "0");
-        minutosBonoIniciales = Integer.parseInt(minutosGuardados);
-
-        // 2. Enlazamos la tarjeta flotante del XML
+        // Enlazamos la tarjeta flotante del XML
         cardViajeActivo = findViewById(R.id.cardViajeActivo);
         tvTiempoCronometro = findViewById(R.id.tvTiempoCronometro);
         tvPrecioCronometro = findViewById(R.id.tvPrecioCronometro);
@@ -107,7 +102,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             btnTerminarViajeFlotante.setOnClickListener(v -> terminarViaje());
         }
 
-        // 3. Recuperamos el viaje de la memoria interna
+        // Recuperamos el viaje de la memoria interna
         if (idCliente != null) {
             SharedPreferences prefsViajes = getSharedPreferences("MisViajesAlquiCar", MODE_PRIVATE);
             tiempoInicioMilisegundos = prefsViajes.getLong("VIAJE_ACTIVO_" + idCliente, 0);
@@ -145,7 +140,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             }
 
             Toast.makeText(this, "Debug: Viaje reseteado manualmente", Toast.LENGTH_SHORT).show();
-            return true;
+            return true; 
         });
     }
 
@@ -244,6 +239,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private void terminarViaje() {
         if(dialogActual != null) dialogActual.dismiss();
 
+        // Apagamos el motor del cronómetro y ocultamos la tarjeta
         if (handlerCronometro != null && runnableCronometro != null) {
             handlerCronometro.removeCallbacks(runnableCronometro);
         }
@@ -251,6 +247,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             cardViajeActivo.setVisibility(View.GONE);
         }
 
+        // Calculamos los totales finales
         long tiempoFinMilisegundos = System.currentTimeMillis();
         long diferenciaMilisegundos = tiempoFinMilisegundos - tiempoInicioMilisegundos;
 
@@ -274,10 +271,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         SharedPreferences prefsUsuario = getSharedPreferences("UsuarioAlquiCar", MODE_PRIVATE);
         prefsUsuario.edit().putString("MINUTOS_USUARIO", String.valueOf(nuevosMinutosDisponibles)).apply();
 
-        // 2. Enviamos el viaje al servidor (PHP)
-        enviarDatosViaje(minutosGastados, distanciaFalsa, costeFinalEuros, co2Falso, nuevosMinutosDisponibles);
+        // Enviamos los datos a la base de datos
+        enviarDatosViaje(minutosGastados, distanciaFalsa, co2Falso);
 
-        // 3. Limpiamos el viaje
+        // Borramos el viaje de la memoria interna
         tiempoInicioMilisegundos = 0;
         SharedPreferences prefsViajes = getSharedPreferences("MisViajesAlquiCar", MODE_PRIVATE);
         prefsViajes.edit().putLong("VIAJE_ACTIVO_" + idCliente, 0).apply();
@@ -286,13 +283,14 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private void enviarDatosViaje(int minutosTotales, double distancia, double costeFinalEuros, int co2, int nuevosMinutosDisponibles) {
         if (idCliente == null) return;
 
+        double costeFinal = minutos * 0.70;
+
         int idVehiculoFalso = 1;
         String modalidad = "MINUTOS";
 
         AlquicarApi api = RetrofitClient.getClient().create(AlquicarApi.class);
 
-        // REGISTRAMOS EL VIAJE CON EL COSTE FINAL REAL
-        api.registrarViaje(idCliente, idVehiculoFalso, modalidad, distancia, costeFinalEuros, co2).enqueue(new Callback<JsonObject>() {
+        api.registrarViaje(idCliente, idVehiculoFalso, modalidad, distancia, costeFinal, co2).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -349,7 +347,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         mapa.moveCamera(CameraUpdateFactory.newLatLngZoom(sevilla, 14f));
         mapa.setOnMarkerClickListener(this);
-
         mapa.addMarker(new MarkerOptions()
                 .position(coche1)
                 .icon(obtenerIconoCoche(R.drawable.icono_coche_mapa))
@@ -408,21 +405,26 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             }
         }
     }
-
     private com.google.android.gms.maps.model.BitmapDescriptor obtenerIconoCoche(int idImagen) {
         android.graphics.drawable.Drawable vectorDrawable = androidx.core.content.ContextCompat.getDrawable(this, idImagen);
         if (vectorDrawable == null) return null;
 
+
         int anchoOriginal = vectorDrawable.getIntrinsicWidth();
         int altoOriginal = vectorDrawable.getIntrinsicHeight();
+
 
         if (anchoOriginal <= 0 || altoOriginal <= 0) {
             anchoOriginal = 100;
             altoOriginal = 100;
         }
 
+
         int anchoDeseado = 300;
+
+
         int altoCalculado = (altoOriginal * anchoDeseado) / anchoOriginal;
+
 
         vectorDrawable.setBounds(0, 0, anchoDeseado, altoCalculado);
         android.graphics.Bitmap bitmap = android.graphics.Bitmap.createBitmap(anchoDeseado, altoCalculado, android.graphics.Bitmap.Config.ARGB_8888);

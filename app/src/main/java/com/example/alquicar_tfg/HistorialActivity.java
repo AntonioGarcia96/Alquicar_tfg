@@ -31,7 +31,6 @@ public class HistorialActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_historial);
 
-        // 1. Abrimos la caja fuerte para sacar el ID del usuario
         SharedPreferences prefs = getSharedPreferences("UsuarioAlquiCar", MODE_PRIVATE);
         idCliente = prefs.getString("ID_SESION", "0");
 
@@ -42,17 +41,16 @@ public class HistorialActivity extends AppCompatActivity {
             return;
         }
 
-        // 2. Configurar el botón Volver
+        // Configuracion del botón Volver
         LinearLayout btnVolver = findViewById(R.id.layoutVolver);
         btnVolver.setOnClickListener(v -> finish());
 
-        // 3. Preparar el RecyclerView (Lista VACÍA al principio, sin datos falsos)
         recyclerView = findViewById(R.id.recyclerViewHistorial);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adaptador = new ViajeAdapter(listaViajes);
         recyclerView.setAdapter(adaptador);
 
-        // 4. Pedir los datos reales al PHP
+        // Pedir los datos reales al PHP
         cargarHistorialDesdeServidor();
     }
 
@@ -63,7 +61,7 @@ public class HistorialActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<JsonObject>> call, Response<List<JsonObject>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    listaViajes.clear(); // Limpiamos por si acaso
+                    listaViajes.clear(); 
 
                     // Llenamos la lista con lo que diga MySQL
                     for (JsonObject obj : response.body()) {
