@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
                         String nombreUsuario = response.body().get("nombre").getAsString();
                         String minutosUsuario = response.body().get("minutos_disponibles").getAsString();
 
-                        // NUEVO: Extraemos el ID_CLIENTE
+                        // Extraemos el ID_CLIENTE
                         String idUsuario = response.body().get("id_cliente").getAsString();
 
                         android.content.SharedPreferences prefs = getSharedPreferences("UsuarioAlquiCar", MODE_PRIVATE);
@@ -71,11 +71,10 @@ public class MainActivity extends AppCompatActivity {
                         // Preparamos el viaje
                         Intent intent = new Intent(MainActivity.this, MainMenuActivity.class);
 
-                        // Metemos los datos en la "mochila" del Intent
+                        // Metemos los datos en el Intent
                         intent.putExtra("NOMBRE_USUARIO", nombreUsuario);
                         intent.putExtra("MINUTOS_USUARIO", minutosUsuario);
 
-                        // NUEVO: Metemos el ID en la mochila
                         intent.putExtra("ID_CLIENTE", idUsuario);
 
                         startActivity(intent);
