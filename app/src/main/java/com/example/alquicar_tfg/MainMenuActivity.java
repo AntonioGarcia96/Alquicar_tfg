@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class MainMenuActivity extends AppCompatActivity {
 
-    private String idClienteFinal; // Guardaremos el ID aquí bien seguro
+    private String idClienteFinal; 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +24,6 @@ public class MainMenuActivity extends AppCompatActivity {
         Button btnHistorial = findViewById(R.id.btnHistorial);
 
 
-        //  EL TRUCO SALVAVIDAS PARA EL ID
         if (getIntent().hasExtra("ID_CLIENTE")) {
             Object idObject = getIntent().getExtras().get("ID_CLIENTE");
             if (idObject != null) {
@@ -32,7 +31,7 @@ public class MainMenuActivity extends AppCompatActivity {
             }
         }
 
-        // Sacamos nombre y minutos (esto sí viaja bien como texto)
+        // Sacamos nombre y minutos
         String nombre = getIntent().getStringExtra("NOMBRE_USUARIO");
         String minutos = getIntent().getStringExtra("MINUTOS_USUARIO");
 
@@ -53,7 +52,7 @@ public class MainMenuActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // Botón para Alquilar (Mapa) CORREGIDO
+        // Botón para Alquilar (Mapa) 
         btnAlquilarMinutos.setOnClickListener(ev ->{
             Intent intent = new Intent(MainMenuActivity.this, MapActivity.class);
             intent.putExtra("ID_CLIENTE", idClienteFinal); // ¡Súper importante para guardar el viaje luego!
@@ -68,13 +67,8 @@ public class MainMenuActivity extends AppCompatActivity {
             finish();
         });
 
-        // Suponiendo que tu botón se llama btnMenuHistorial
         btnHistorial.setOnClickListener(v -> {
-            // El Intent es el "billete de tren" para ir a otra pantalla
             Intent intent = new Intent(MainMenuActivity.this, HistorialActivity.class);
-
-            // Si necesitas pasarle el ID del cliente para luego buscar sus viajes reales:
-            // intent.putExtra("ID_CLIENTE", idCliente);
 
             startActivity(intent);
         });
