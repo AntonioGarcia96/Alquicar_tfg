@@ -66,6 +66,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private Runnable runnableCronometro;
     private final double PRECIO_POR_MINUTO = 0.70;
 
+    // NUEVAS VARIABLES PARA EL SISTEMA DE BONOS
+    private int minutosBonoIniciales = 0;
+
     TextView tvMatricula, tvAutonomia, tvPrecio, tvBateria;
     Button btnReservar;
     ImageButton btMenu;
@@ -101,8 +104,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         // Recuperamos el viaje de la memoria interna
         if (idCliente != null) {
-            SharedPreferences prefs = getSharedPreferences("MisViajesAlquiCar", MODE_PRIVATE);
-            tiempoInicioMilisegundos = prefs.getLong("VIAJE_ACTIVO_" + idCliente, 0);
+            SharedPreferences prefsViajes = getSharedPreferences("MisViajesAlquiCar", MODE_PRIVATE);
+            tiempoInicioMilisegundos = prefsViajes.getLong("VIAJE_ACTIVO_" + idCliente, 0);
 
             // Si ya había un viaje guardado, arrancamos la tarjeta visual directamente
             if (tiempoInicioMilisegundos > 0) {
@@ -125,10 +128,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        // Si dejas pulsado el botón de menú 2 segundos, se resetea el viaje
+
         btMenu.setOnLongClickListener(v -> {
-            SharedPreferences prefs = getSharedPreferences("MisViajesAlquiCar", MODE_PRIVATE);
-            prefs.edit().putLong("VIAJE_ACTIVO_" + idCliente, 0).apply();
+            SharedPreferences prefsViajes = getSharedPreferences("MisViajesAlquiCar", MODE_PRIVATE);
+            prefsViajes.edit().putLong("VIAJE_ACTIVO_" + idCliente, 0).apply();
 
             tiempoInicioMilisegundos = 0;
             if (cardViajeActivo != null) cardViajeActivo.setVisibility(View.GONE);
@@ -151,16 +154,15 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         tvPrecio = vista.findViewById(R.id.tvTarifa);
         btnReservar = vista.findViewById(R.id.btnReservarCoche);
 
-        tvMatricula.setText(matricula);
+        tvMatricula.setText("Matrícula " + matricula);
         tvBateria.setText("Batería: " + bateria + "%");
         tvAutonomia.setText("Autonomía: " + autonomia + "km");
         tvPrecio.setText("Tarifa: " + precio + "€ / min");
 
-        // Si ya hay un viaje activo, no dejamos reservar otro coche
         if (tiempoInicioMilisegundos > 0) {
             btnReservar.setText("Ya tienes un viaje en curso");
             btnReservar.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
-            btnReservar.setEnabled(false); // Desactivamos el botón
+            btnReservar.setEnabled(false);
         } else {
             btnReservar.setText("Reservar y Empezar Viaje");
             btnReservar.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
@@ -174,7 +176,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     private void arrancarRelojVisual() {
         if (cardViajeActivo != null) {
-            cardViajeActivo.setVisibility(View.VISIBLE); // Mostramos la tarjeta
+            cardViajeActivo.setVisibility(View.VISIBLE);
         }
 
         runnableCronometro = new Runnable() {
@@ -183,21 +185,33 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 long tiempoActual = System.currentTimeMillis();
                 long diferencia = tiempoActual - tiempoInicioMilisegundos;
 
-                int minutos = (int) (diferencia / 60000);
-                int segundos = (int) ((diferencia % 60000) / 1000);
+                int minutosGastados = (int) (diferencia / 60000);
+                int segundosGastados = (int) ((diferencia % 60000) / 1000);
 
-                // Calculamos el coste progresivo
-                double minutosExactos = diferencia / 60000.0;
-                double costeActual = minutosExactos * PRECIO_POR_MINUTO;
-
-                // Formateamos los textos
-                String tiempoFormateado = String.format("%02d:%02d", minutos, segundos);
-                String costeFormateado = String.format("%.2f €", costeActual);
-
+                // Mostramos el tiempo exacto en formato MM:SS
+                String tiempoFormateado = String.format("%02d:%02d", minutosGastados, segundosGastados);
                 if (tvTiempoCronometro != null) tvTiempoCronometro.setText(tiempoFormateado);
-                if (tvPrecioCronometro != null) tvPrecioCronometro.setText(costeFormateado);
 
-                // Se repite cada segundo
+                // --- LÓGICA HÍBRIDA DE PAGO ---
+                if (tvPrecioCronometro != null) {
+                    if (minutosGastados < minutosBonoIniciales) {
+                        // AÚN TIENE SALDO DEL BONO
+                        int minutosRestantes = minutosBonoIniciales - minutosGastados;
+                        tvPrecioCronometro.setText("Quedan: " + minutosRestantes + " min restantes");
+                        tvPrecioCronometro.setTextColor(getResources().getColor(android.R.color.holo_green_dark)); // Verde para "gratis"
+                    } else {
+                        // SE QUEDÓ SIN BONO, EMPIEZA A COBRAR
+                        int minutosFacturables = minutosGastados - minutosBonoIniciales;
+
+                        // Calculamos el coste basándonos solo en los minutos fuera del bono
+                        // Usamos double para tener céntimos (ej. 1 min extra * 0.70€ = 0.70€)
+                        double costeReal = minutosFacturables * PRECIO_POR_MINUTO;
+
+                        tvPrecioCronometro.setText(String.format("Precio: %.2f €", costeReal));
+                        tvPrecioCronometro.setTextColor(getResources().getColor(android.R.color.black)); // Negro para cobrar
+                    }
+                }
+
                 handlerCronometro.postDelayed(this, 1000);
             }
         };
@@ -207,15 +221,18 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private void iniciarViaje() {
         tiempoInicioMilisegundos = System.currentTimeMillis();
 
-        SharedPreferences prefs = getSharedPreferences("MisViajesAlquiCar", MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
+        SharedPreferences prefsViajes = getSharedPreferences("MisViajesAlquiCar", MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefsViajes.edit();
         editor.putLong("VIAJE_ACTIVO_" + idCliente, tiempoInicioMilisegundos);
         editor.apply();
+
+        // Refrescamos los minutos justo antes de arrancar por si compró un bono
+        SharedPreferences prefsUsuario = getSharedPreferences("UsuarioAlquiCar", MODE_PRIVATE);
+        minutosBonoIniciales = Integer.parseInt(prefsUsuario.getString("MINUTOS_USUARIO", "0"));
 
         Toast.makeText(this, "¡Viaje iniciado! Conduce con cuidado.", Toast.LENGTH_SHORT).show();
         if(dialogActual != null) dialogActual.dismiss();
 
-        // Arrancamos el cronómetro de la tarjeta
         arrancarRelojVisual();
     }
 
@@ -235,25 +252,35 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         long diferenciaMilisegundos = tiempoFinMilisegundos - tiempoInicioMilisegundos;
 
         int minutosGastados = (int) (diferenciaMilisegundos / 60000);
-        if (minutosGastados == 0) minutosGastados = 1;
+        if (minutosGastados == 0) minutosGastados = 1; // Mínimo cobramos 1 minuto
 
+        // CÁLCULO FINAL DE PAGO Y BONO
+        int minutosBonoConsumidos = Math.min(minutosGastados, minutosBonoIniciales);
+        int nuevosMinutosDisponibles = minutosBonoIniciales - minutosBonoConsumidos;
+
+        int minutosParaPagar = minutosGastados - minutosBonoConsumidos;
+        double costeFinalEuros = minutosParaPagar * PRECIO_POR_MINUTO;
+
+        // Datos falsos para rellenar BD
         double distanciaFalsa = minutosGastados * 0.5;
         int co2Falso = minutosGastados * 120;
 
-        Toast.makeText(this, "Procesando pago de " + minutosGastados + " min...", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Terminando... Has usado " + minutosBonoConsumidos + " min de bono. A pagar: " + String.format("%.2f", costeFinalEuros) + "€", Toast.LENGTH_LONG).show();
+
+        // 1. Guardamos el nuevo saldo de minutos en el teléfono
+        SharedPreferences prefsUsuario = getSharedPreferences("UsuarioAlquiCar", MODE_PRIVATE);
+        prefsUsuario.edit().putString("MINUTOS_USUARIO", String.valueOf(nuevosMinutosDisponibles)).apply();
 
         // Enviamos los datos a la base de datos
         enviarDatosViaje(minutosGastados, distanciaFalsa, co2Falso);
 
         // Borramos el viaje de la memoria interna
         tiempoInicioMilisegundos = 0;
-        SharedPreferences prefs = getSharedPreferences("MisViajesAlquiCar", MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putLong("VIAJE_ACTIVO_" + idCliente, 0);
-        editor.apply();
+        SharedPreferences prefsViajes = getSharedPreferences("MisViajesAlquiCar", MODE_PRIVATE);
+        prefsViajes.edit().putLong("VIAJE_ACTIVO_" + idCliente, 0).apply();
     }
 
-    private void enviarDatosViaje(int minutos, double distancia, int co2) {
+    private void enviarDatosViaje(int minutosTotales, double distancia, double costeFinalEuros, int co2, int nuevosMinutosDisponibles) {
         if (idCliente == null) return;
 
         double costeFinal = minutos * 0.70;
@@ -269,10 +296,12 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 if (response.isSuccessful() && response.body() != null) {
                     JsonObject result = response.body();
                     if (result.get("status").getAsString().equals("success")) {
-                        Toast.makeText(MapActivity.this, "¡Viaje finalizado con éxito!", Toast.LENGTH_LONG).show();
-                        finish();
+
+                        // Si el viaje se guardó bien, ACTUALIZAMOS LOS MINUTOS EN EL SERVIDOR
+                        actualizarMinutosServidor(nuevosMinutosDisponibles);
+
                     } else {
-                        Toast.makeText(MapActivity.this, "Error: " + result.get("message").getAsString(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(MapActivity.this, "Error BD Viaje: " + result.get("message").getAsString(), Toast.LENGTH_LONG).show();
                     }
                 }
             }
@@ -280,6 +309,30 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 Toast.makeText(MapActivity.this, "Error de red al guardar el viaje", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+    private void actualizarMinutosServidor(int nuevosMinutos) {
+        AlquicarApi api = RetrofitClient.getClient().create(AlquicarApi.class);
+
+        // Llamamos al servidor para que guarde el nuevo saldo permanentemente
+        api.actualizarMinutos(idCliente, nuevosMinutos).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    // Si la base de datos ya está actualizada, ya podemos cerrar con seguridad
+                    Toast.makeText(MapActivity.this, "¡Viaje finalizado y minutos guardados!", Toast.LENGTH_LONG).show();
+                    finish(); // Volvemos al menú principal
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                // Si falla el internet, avisamos, pero al menos lo hemos guardado en SharedPreferences
+                Log.e("API_ERROR", "No se pudo sincronizar el saldo: " + t.getMessage());
+                finish();
             }
         });
     }
@@ -303,7 +356,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     @Override
     public boolean onMarkerClick(@NonNull Marker marker) {
         String matricula = marker.getSnippet();
-        mostrarInfoCoche(matricula, 80, 200, PRECIO_POR_MINUTO);
+        mostrarInfoCoche("2323FAB", 80, 200, PRECIO_POR_MINUTO);
         return true;
     }
 

@@ -30,6 +30,15 @@ public interface AlquicarApi {
 
     );
     @FormUrlEncoded
+    @POST("actualizar_minutos.php")
+    Call<JsonObject> actualizarMinutos(
+            @Field("id_cliente") String idCliente,
+            @Field("minutos_restantes") int minutosRestantes
+    );
+    @FormUrlEncoded
+    @POST("comprar_bono.php")
+    Call<JsonObject> comprarBono(@Field("id_cliente") String idCliente, @Field("minutos") int minutos);
+    @FormUrlEncoded
     @POST("login.php")
     Call<JsonObject> loginUsuario(
             @Field("email") String email,
