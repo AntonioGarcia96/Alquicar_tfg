@@ -17,7 +17,7 @@ import retrofit2.Response;
 public class PerfilActivity extends AppCompatActivity {
 
     private TextView tvNombre, tvMinutos, tvViajes, tvDistancia, tvAhorro;
-    private String idClienteFinal; // Guardaremos el ID aquí para usarlo en toda la pantalla
+    private String idClienteFinal; 
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -33,8 +33,7 @@ public class PerfilActivity extends AppCompatActivity {
 
         findViewById(R.id.tvVolverLabel).setOnClickListener(v -> finish());
 
-        // 🔥 EL TRUCO SALVAVIDAS 🔥
-        // Intentamos sacarlo como String. Si es null, lo sacamos como Integer y lo convertimos a String.
+
         if (getIntent().hasExtra("ID_CLIENTE")) {
             Object idObject = getIntent().getExtras().get("ID_CLIENTE");
             if (idObject != null) {
@@ -52,7 +51,6 @@ public class PerfilActivity extends AppCompatActivity {
         btnEditar.setOnClickListener(v -> {
             Intent intent = new Intent(PerfilActivity.this, EditarPerfilActivity.class);
 
-            // Le pasamos nuestro ID ya asegurado a la pantalla de Editar
             intent.putExtra("ID_CLIENTE", idClienteFinal);
 
             startActivity(intent);
